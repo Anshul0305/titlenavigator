@@ -88,7 +88,7 @@
 	<div class="row">
 		<?php 
 		$crid = $_GET["crid"];
-		$json =  file_get_contents("https://api.store.bbc.com/store-gateway/v1/products/titles/crid%3A%2F%2Fbbc.co.uk%2Fprogrammes%2F".$crid."?apikey=9Odn7EJqe9H9DXGTwJSEUGWuGGG9G3K4");
+		$json =  file_get_contents("https://api.store.bbc.com/store-gateway/v1/products/titles/crid%3A%2F%2Fbbc.co.uk%2Fprogrammes%2F".$crid."?apikey=".file_get_contents("apikey.txt"));
 		$obj =  json_decode($json);
 		$purchasableItems = $obj->product[0]->purchasableItems->purchasableItem;
 		?>
