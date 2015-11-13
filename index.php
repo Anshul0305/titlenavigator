@@ -91,6 +91,12 @@
 		$json =  file_get_contents("https://api.store.bbc.com/store-gateway/v1/products/titles/crid%3A%2F%2Fbbc.co.uk%2Fprogrammes%2F".$crid."?apikey=".file_get_contents("apikey.txt"));
 		$obj =  json_decode($json);
 		$purchasableItems = $obj->product[0]->purchasableItems->purchasableItem;
+
+		function get_version_type($cid){
+						
+
+					}
+
 		?>
 		
 		
@@ -206,6 +212,12 @@
 						<th>
 							Content ID
 						</th>
+						<th>
+							Version Types
+						</th>
+						<th>
+							Propagation State
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -213,6 +225,8 @@
 					<?php
 						
 						
+
+
 					foreach(array_unique($array_content_id) as $cid){
 						
 				?>		
@@ -222,7 +236,29 @@
 						 <?php	echo $i++; ?>
 						</td>
 						<td>
-							<?php echo $cid?>
+							<?php echo $cid;?>
+						</td>
+						<td>
+							<?php 
+							  	foreach ($purchasableItems as $pi) {
+							if ($pi->contentId == $cid) {
+							 	echo $pi->versionTypes;
+							 	break;
+							}
+						}
+
+							?>
+						</td>
+						<td>
+							<?php 
+							  	foreach ($purchasableItems as $pi) {
+							if ($pi->contentId == $cid) {
+							 	echo ($pi->propagationState)?"True":"False";
+							 	break;
+							}
+						}
+
+							?>
 						</td>
 						</tr>
 					
