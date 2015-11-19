@@ -92,10 +92,6 @@
 		$json =  file_get_contents("https://api.store.bbc.com/store-gateway/v1/products/titles/crid%3A%2F%2Fbbc.co.uk%2Fprogrammes%2F".$crid."?apikey=".file_get_contents("apikey.txt"));
 		$obj =  json_decode($json);
 		$purchasableItems = $obj->product[0]->purchasableItems->purchasableItem;
-
-		
-	
-
 		?>
 		
 		
@@ -105,10 +101,6 @@
 		<div id="result" class="col-md-12">
 			
 					<?php
-
-					
-
-					$i=1;
 					if($purchasableItems !=null){
 					?>
 			<div class="col-sm-12 text-center">
@@ -117,75 +109,6 @@
 			</div>
 	
 			
-			    <table class="table">
-				<thead>
-					<tr>
-						<th>
-							#
-						</th>
-						<th>
-							Product Type
-						</th>
-						<th>
-							Product Details
-						</th>
-						<th>
-							Content ID
-						</th>
-						<th>
-							Profile
-						</th>
-						<th>
-							Version
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					
-					
-					<?php
-						
-					foreach($purchasableItems as $purchasableItem){
-						
-				?>		
-				
-					<tr class="active">
-						<td>
-						 <?php	echo $i++; ?>
-						</td>
-						<td>
-							<?php echo $purchasableItem->qualifier?>
-						</td>
-						<td>
-							<?php echo $purchasableItem->name?>
-						</td>
-						<td>
-							<?php echo $purchasableItem->contentId?>
-						</td>
-						<td>
-							<?php echo $purchasableItem->profile?>
-						</td>
-						<td>
-							<?php echo $purchasableItem->versionTypes?>
-						</td>
-					</tr>
-					
-					<?php
-					}
-						
-					}
-					else{
-						if($_GET["crid"]!=""){
-							echo "Invalid Data! Please Try Again!";
-						}
-							
-						}
-					
-					?>
-					
-					
-				</tbody>
-			</table> 
 			
 			</br></br>
 	
@@ -204,16 +127,14 @@
 					$i=1;
 					if($array_content_id !=null){
 						?>
-<h5>Group By Content</h5>
+<h3>Group By Content</h3>
 <table class="table">
 				<thead>
 					<tr>
 						<th>
-							Product Details
+							Content ID ( and Products linked to it)
 						</th>
-						<th>
-							Content ID
-						</th>
+						
 						<th>
 							Version Types
 						</th>
@@ -226,20 +147,15 @@
 					
 					<?php
 						
-						
-
-
 					foreach(array_unique($array_content_id) as $cid){
 						
 				?>		
 				
 					<tr class="active">
 						<td>
-						 <?php	echo $i++; ?>
+						 <?php	echo $i++ .'. ' . $cid; ?>
 						</td>
-						<td>
-							<?php echo $cid;?>
-						</td>
+					
 						<td>
 							<?php 
 							  	foreach ($purchasableItems as $pi) {
@@ -268,7 +184,7 @@
 					
 							<?php if($pi->contentId == $cid) 
 								
-							echo "<tr><td>". $pi->name . "</td></tr>";
+							echo "<tr><td><strong>".  $pi->name .' </strong>('.$pi->productId .')' . "</td></tr>";
 							
 							?>
 						
@@ -291,8 +207,74 @@
 				</tbody>
 			</table> 
 			
-			
+			</br></br></br></br>
 		</div>
+	
+
+		<h3>All Purchasable Items</h3>
+			    <table class="table">
+				<thead>
+					<tr>
+						<th>
+							Product Type
+						</th>
+						<th>
+							Product Name (Product ID)
+						</th>
+						<th>
+							Content ID
+						</th>
+						<th>
+							Profile
+						</th>
+						<th>
+							Version
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+					
+					<?php
+						
+					foreach($purchasableItems as $purchasableItem){
+						var_dump();
+				?>		
+				
+					<tr class="active">
+						<td>
+							<?php echo $purchasableItem->qualifier?>
+						</td>
+						<td>
+							<?php echo  $purchasableItem->name ?>
+						</td>
+						<td>
+							<?php echo $purchasableItem->contentId?>
+						</td>
+						<td>
+							<?php echo $purchasableItem->profile?>
+						</td>
+						<td>
+							<?php echo $purchasableItem->versionTypes?>
+						</td>
+					</tr>
+					
+					<?php
+					}
+						
+					}
+					else{
+						if($_GET["crid"]!=""){
+							echo "Invalid Data! Please Try Again!";
+						}
+							
+						}
+					
+					?>
+					
+					
+				</tbody>
+			</table> 
 	</div>
 </div>
 
