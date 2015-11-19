@@ -22,7 +22,7 @@
 		<div class="col-md-12" >
 			<div class="text-center" style="color:blue">
 			<h3>
-				Title Navigator
+				Title Navigator - Version 1.1
 			</h3>
 				</br></br>
 			</div>
@@ -33,7 +33,7 @@
 						Title Crid:
 					</label>
 					<div class="col-sm-8">
-						<input id="crid" placeholder="e.g. p01c8jm8" name="crid" type="text" class="form-control">
+						<input id="crid" value="crid%3A%2F%2Fbbc.co.uk%2Fprogrammes%2F"  name="crid" type="text" class="form-control">
 					</div>
 					
 					<div class="col-sm-2">
@@ -89,7 +89,9 @@
 		<?php 
 		include 'ChromePhp.php';
 		$crid = $_GET["crid"];
-		$json =  file_get_contents("https://api.store.bbc.com/store-gateway/v1/products/titles/crid%3A%2F%2Fbbc.co.uk%2Fprogrammes%2F".$crid."?apikey=".file_get_contents("apikey.txt"));
+		if($crid=="")
+		$crid="abcd";
+		$json =  file_get_contents("https://api.store.bbc.com/store-gateway/v1/products/titles/".$crid."?apikey=".file_get_contents("apikey.txt"));
 		$obj =  json_decode($json);
 		$purchasableItems = $obj->product[0]->purchasableItems->purchasableItem;
 		?>
@@ -104,7 +106,7 @@
 					if($purchasableItems !=null){
 					?>
 			<div class="col-sm-12 text-center">
-			<strong>Title:</strong> <?php echo $obj->product[0]->parentProducts->product[0]->name.": ". $obj->product[0]->name?>
+			<h4> <?php echo $obj->product[0]->parentProducts->product[0]->name.": ". $obj->product[0]->name?></h4>
 	</br></br>
 			</div>
 	
@@ -127,7 +129,7 @@
 					$i=1;
 					if($array_content_id !=null){
 						?>
-<h3>Group By Content</h3>
+
 <table class="table">
 				<thead>
 					<tr>
@@ -136,7 +138,7 @@
 						</th>
 						
 						<th>
-							Version Types
+							Version Type
 						</th>
 						<th>
 							Propagation State
@@ -184,7 +186,7 @@
 					
 							<?php if($pi->contentId == $cid) 
 								
-							echo "<tr><td><strong>".  $pi->name .' </strong>('.$pi->productId .')' . "</td></tr>";
+							echo "<tr><td>".  $pi->name .' </td><td>( <font color="brown">'.$pi->productId .'</font> )' . "</td></tr>";
 							
 							?>
 						
