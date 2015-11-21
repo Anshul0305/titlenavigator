@@ -134,7 +134,7 @@
 				<thead>
 					<tr>
 						<th>
-							Content ID ( and Products linked to it)
+							Content ID ( and Products linked to it )
 						</th>
 						
 						<th>
@@ -181,18 +181,24 @@
 							?>
 						</td>
 						</tr>
-					
+						<tr><td>
+						<table>
+							<th>Product Name</th>
+							<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+							<th>Product ID</th>
+
 						<?php foreach($purchasableItems as $pi) {?>
 					
 							<?php if($pi->contentId == $cid) 
 								
-							echo "<tr><td>".  $pi->name .' </td><td>( <font color="brown">'.$pi->productId .'</font> )' . "</td></tr>";
+							echo "<tr><td>".  $pi->name .' </td><td></td><td> <font color="brown">'.$pi->productId .'</font> ' . "</td></tr>";
 							
 							?>
 						
 						<?php } ?>
 					
-					
+						</table>
+						</td></tr>
 					<?php
 					}
 						
@@ -221,7 +227,7 @@
 							Product Type
 						</th>
 						<th>
-							Product Name (Product ID)
+							Product Name
 						</th>
 						<th>
 							Content ID
