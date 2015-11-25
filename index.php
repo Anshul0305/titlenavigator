@@ -35,7 +35,7 @@ select {
 		<div class="col-md-12" >
 			<div class="text-center" style="color:blue">
 			<h3>
-				Title Navigator - Version 1.1
+				Title Navigator - Version 2.0
 			</h3>
 				</br></br>
 			</div>
