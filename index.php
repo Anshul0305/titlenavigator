@@ -14,6 +14,19 @@
     <link href="css/style.css" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
+<style>
+select {
+   background: white;
+   width: 100px;
+   padding: 5px;
+   font-size: 16px;
+   line-height: 1;
+   border: 0;
+   border-radius: 0;
+   height: 34px;
+   -webkit-appearance: none;
+   }
+</style>
   </head>
   <body style="background-color:mediumaquamarine">
 
@@ -33,7 +46,16 @@
 						Title Crid:
 					</label>
 					<div class="col-sm-8">
-						<input id="crid" value="crid%3A%2F%2Fbbc.co.uk%2Fprogrammes%2F"  name="crid" type="text" class="form-control">
+						<input id="crid" value="crid%3A%2F%2Fbbc.co.uk%2Fprogrammes%2F" name="crid" type="text" class="form-control">
+					</div>
+
+					<div class="col-sm-1">
+					<select name="env" form="TitleForm">
+  						<option value="prod">Prod</option>
+  						<option value="preprod">Preprod</option>
+  						<option value="test">Test</option>
+						<option value="dev">Dev</option>
+					</select>
 					</div>
 					
 					<div class="col-sm-2">
@@ -89,9 +111,31 @@
 		<?php 
 		include 'ChromePhp.php';
 		$crid = $_GET["crid"];
+		$env = $_GET["env"];
+		$apihost = "api";
+		$apikey = "";
 		if($crid=="")
-		$crid="abcd";
-		$json =  file_get_contents("https://api.store.bbc.com/store-gateway/v1/products/titles/".$crid."?apikey=".file_get_contents("apikey.txt"));
+		{
+			$crid="abcd";
+		}
+		if($env == "dev"){
+			$apihost = "api-dev";
+			$apikey = json_decode(file_get_contents("apikey.json"))->{"preprod"};
+		}
+		else if($env == "test"){
+			$apihost = "api-test";
+			$apikey = json_decode(file_get_contents("apikey.json"))->{"preprod"};
+		}
+		else if ($env == "preprod"){
+			$apihost = "api-preprod";
+			$apikey = json_decode(file_get_contents("apikey.json"))->{"preprod"};
+		}
+		else{
+			$apihost = "api";
+			$apikey = json_decode(file_get_contents("apikey.json"))->{"prod"};
+		}
+
+		$json =  file_get_contents("https://".$apihost.".store.bbc.com/store-gateway/v1/products/titles/".$crid."?apikey=".$apikey);
 		$obj =  json_decode($json);
 		$purchasableItems = $obj->product[0]->purchasableItems->purchasableItem;
 		?>
@@ -107,6 +151,8 @@
 					?>
 			<div class="col-sm-12 text-center">
 			<h4> <?php echo $obj->product[0]->parentProducts->product[0]->name.": ". $obj->product[0]->name?></h4>
+	
+	<p>Environment: <?php echo $_GET["env"];?></p>
 	</br></br>
 			</div>
 	
